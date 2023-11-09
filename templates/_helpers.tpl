@@ -30,3 +30,15 @@ Use the fullname if the serviceAccount value is not set
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Labels to use on every resource
+*/}}
+{{- define "filebeat.labels" -}}
+labels:
+  app.kubernetes.io/name: "{{ template "filebeat.fullname" . }}"
+  helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+  app.kubernetes.io/instance: "{{ .Release.Name }}"
+  app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+{{- end -}}

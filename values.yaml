@@ -1,9 +1,13 @@
 ---
+# Generics settings (apply to both daemonset and deployment)
+labels: {}
+annotations: {}
+
 daemonset:
   # Annotations to apply to the daemonset
-  annotations: {}
+  annotations: null
   # additionals labels
-  labels: {}
+  labels: null
   affinity: {}
   # Include the daemonset
   enabled: true
@@ -89,9 +93,9 @@ daemonset:
 
 deployment:
   # Annotations to apply to the deployment
-  annotations: {}
+  annotations: null
   # additionals labels
-  labels: {}
+  labels: null
   affinity: {}
   # Include the deployment
   enabled: false

@@ -5,11 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "filebeat.fullname" $ }}{{ $name }}-config
-  labels:
-    app: "{{ template "filebeat.fullname" $ }}"
-    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
-    heritage: {{ $.Release.Service | quote }}
-    release: {{ $.Release.Name | quote }}
+{{ include "filebeat.labels" $ | indent 2}}
 data:
 {{- range $path, $config := $config_scope.filebeatConfig }}
   {{ $path }}: |

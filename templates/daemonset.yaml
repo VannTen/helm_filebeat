@@ -4,31 +4,23 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "filebeat.fullname" . }}
-  labels:
-    app: "{{ template "filebeat.fullname" . }}"
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    heritage: {{ .Release.Service | quote }}
-    release: {{ .Release.Name | quote }}
-    {{- if .Values.daemonset.labels }}
-    {{- range $key, $value := .Values.daemonset.labels }}
+{{ include "filebeat.labels" $ | indent 2 }}
+    {{- range $key, $value := (.Values.daemonset.labels | default .Values.labels) }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
-    {{- else }}
-    {{- range $key, $value := .Values.labels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-    {{- end }}
-  {{- if .Values.daemonset.annotations }}
+  {{- $annotations := (.Values.daemonset.annotations | default .Values.annotations) }}
+  {{- if $annotations }}
   annotations:
-    {{- range $key, $value := .Values.daemonset.annotations }}
+    {{- range $key, $value := $annotations }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
   {{- end }}
 spec:
   selector:
     matchLabels:
-      app: "{{ template "filebeat.fullname" . }}"
-      release: {{ .Release.Name | quote }}
+      app.kubernetes.io/name: "{{ template "filebeat.fullname" . }}"
+      app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+      app.kubernetes.io/instance: "{{ .Release.Name }}"
   updateStrategy:
     {{- if eq .Values.updateStrategy "RollingUpdate" }}
     rollingUpdate:
@@ -46,11 +38,7 @@ spec:
         configChecksum: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum | trunc 63 }}
         {{- end }}
       name: "{{ template "filebeat.fullname" . }}"
-      labels:
-        app: "{{ template "filebeat.fullname" . }}"
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-        heritage: {{ .Release.Service | quote }}
-        release: {{ .Release.Name | quote }}
+{{ include "filebeat.labels" $ | indent 6 }}
         {{- if .Values.daemonset.labels }}
         {{- range $key, $value := .Values.daemonset.labels }}
         {{ $key }}: {{ $value | quote }}
