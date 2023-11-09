@@ -38,7 +38,7 @@ daemonset:
   # Allows you to add any config files in /usr/share/filebeat
   # such as filebeat.yml for daemonset
   filebeatConfig:
-    filebeat.yml: |
+    filebeat.yml:
       filebeat.inputs:
       - type: container
         paths:
@@ -124,7 +124,7 @@ deployment:
   #   readOnly: true
   # such as filebeat.yml for deployment
   filebeatConfig:
-    filebeat.yml: |
+    filebeat.yml:
       filebeat.inputs:
         - type: log
           paths:

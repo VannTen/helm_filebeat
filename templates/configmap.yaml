@@ -13,7 +13,7 @@ metadata:
 data:
 {{- range $path, $config := $config_scope.filebeatConfig }}
   {{ $path }}: |
-{{ $config | indent 4 -}}
+    {{- toYaml $config | nindent 4 -}}
 {{- end -}}
 {{ end }}
 {{ end }}
