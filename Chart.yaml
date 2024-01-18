@@ -1,12 +1,12 @@
 apiVersion: v1
-description: Official Elastic helm chart for Filebeat
-home: https://github.com/elastic/helm-charts
+description: Helm chart for Elastic Filebeat
+home: https://github.com/VannTen/helm-filebeat
 maintainers:
-  - email: helm-charts@elastic.co
-    name: Elastic
+  - email: mg@max.gautier.name
+    name: Max Gautier
 name: filebeat
-version: 8.5.1
+version: 9.0.0
 appVersion: 8.5.1
 sources:
-  - https://github.com/elastic/beats
+  - https://github.com/VannTen/helm-filebeat
 icon: https://helm.elastic.co/icons/beats.png
