@@ -62,7 +62,7 @@ daemonset:
         protocol: https
         ssl.certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
   # Mount Docker socket /var/run/docker.sock
-  dockerSockMount: true
+  dockerSockMount: false
   # Only used when updateStrategy is set to "RollingUpdate"
   maxUnavailable: 1
   nodeSelector: {}
