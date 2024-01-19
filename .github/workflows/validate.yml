@@ -1,0 +1,25 @@
+name: lint and test
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  kubeconform:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Generate and validate releases
+      uses: docker://ghcr.io/shivjm/helm-kubeconform-action:v0.2.0
+      env:
+        ADDITIONAL_SCHEMA_PATHS: |
+          schemas/{{ .ResourceKind }}.json
+        CHARTS_DIRECTORY: ".."
+        KUBECONFORM_STRICT: "true"
+        HELM_UPDATE_DEPENDENCIES: "true"
