@@ -73,16 +73,16 @@ spec:
         secret:
           secretName: {{ .secretName }}
       {{- end }}
-      {{- if .Values.filebeatConfig }}
-      - name: filebeat-config
-        configMap:
-          defaultMode: 0600
-          name: {{ template "filebeat.fullname" . }}-config
-      {{- else if .Values.daemonset.filebeatConfig }}
+      {{- if .Values.daemonset.filebeatConfig }}
       - name: filebeat-config
         configMap:
           defaultMode: 0600
           name: {{ template "filebeat.fullname" . }}-daemonset-config
+      {{- else if .Values.filebeatConfig }}
+      - name: filebeat-config
+        configMap:
+          defaultMode: 0600
+          name: {{ template "filebeat.fullname" . }}-config
       {{- end }}
       - name: data
         hostPath:

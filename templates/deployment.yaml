@@ -61,16 +61,16 @@ spec:
         secret:
           secretName: {{ .secretName }}
       {{- end }}
-      {{- if .Values.filebeatConfig }}
-      - name: filebeat-config
-        configMap:
-          defaultMode: 0600
-          name: {{ template "filebeat.fullname" . }}-config
-      {{- else if .Values.deployment.filebeatConfig }}
+      {{- if .Values.deployment.filebeatConfig }}
       - name: filebeat-config
         configMap:
           defaultMode: 0600
           name: {{ template "filebeat.fullname" . }}-deployment-config
+      {{- else if .Values.filebeatConfig }}
+      - name: filebeat-config
+        configMap:
+          defaultMode: 0600
+          name: {{ template "filebeat.fullname" . }}-config
       {{- end }}
       {{- if .Values.extraVolumes | default .Values.deployment.extraVolumes }}
 {{ toYaml ( .Values.extraVolumes | default .Values.deployment.extraVolumes ) | indent 6 }}
