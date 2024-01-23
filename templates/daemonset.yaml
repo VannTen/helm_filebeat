@@ -106,6 +106,7 @@ spec:
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
+      securityContext: {{ toYaml ( .Values.podSecurityContext | default .Values.daemonset.securityContext ) | nindent 10 }}
       {{- if .Values.extraInitContainers }}
       initContainers:
       # All the other beats accept a string here while
@@ -137,6 +138,8 @@ spec:
 {{ toYaml .Values.readinessProbe | indent 10 }}
         resources:
 {{ toYaml ( .Values.resources | default .Values.daemonset.resources )  | indent 10 }}
+        securityContext:
+          readOnlyRootFilesystem: true
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -150,7 +153,6 @@ spec:
 {{ toYaml ( .Values.extraEnvs | default .Values.daemonset.extraEnvs ) | indent 8 }}
 {{- end }}
         envFrom: {{ toYaml ( .Values.envFrom | default .Values.daemonset.envFrom ) | nindent 10 }}
-        securityContext: {{ toYaml ( .Values.podSecurityContext | default .Values.daemonset.securityContext ) | nindent 10 }}
         volumeMounts:
         {{- range .Values.secretMounts | default .Values.daemonset.secretMounts }}
         - name: {{ .name }}

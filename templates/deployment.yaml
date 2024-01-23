@@ -93,6 +93,7 @@ spec:
 {{ toYaml .Values.extraInitContainers | indent 6 }}
       {{- end }}
       {{- end }}
+      securityContext: {{ toYaml ( .Values.podSecurityContext | default .Values.deployment.securityContext ) | nindent 10 }}
       containers:
       - name: "filebeat"
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -109,6 +110,8 @@ spec:
         readinessProbe:
 {{ toYaml .Values.readinessProbe | indent 10 }}
         resources: {{ toYaml ( .Values.resources | default .Values.deployment.resources ) | nindent 10 }}
+        securityContext:
+          readOnlyRootFilesystem: true
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -118,7 +121,6 @@ spec:
 {{ toYaml ( .Values.extraEnvs | default .Values.deployment.extraEnvs ) | indent 8 }}
 {{- end }}
         envFrom: {{ toYaml ( .Values.envFrom | default .Values.deployment.envFrom ) | nindent 10 }}
-        securityContext: {{ toYaml ( .Values.podSecurityContext | default .Values.deployment.securityContext ) | nindent 10 }}
         volumeMounts:
         {{- range .Values.secretMounts | default .Values.deployment.secretMounts }}
         - name: {{ .name }}

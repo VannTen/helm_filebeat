@@ -2,6 +2,15 @@
 # Generics settings (apply to both daemonset and deployment)
 labels: {}
 annotations: {}
+podSecurityContext:
+  # Various pod security context settings. Bear in mind that many of these have an impact on Filebeat functioning properly.
+  #
+  # - User that the container will execute as. Typically necessary to run as root (0) in order to properly collect host container logs.
+  # - Whether to execute the Filebeat containers as privileged containers. Typically not necessarily unless running within environments such as OpenShift.
+  runAsUser: 8405
+  runAsGroup: 8405
+  supplementalGroups:
+  - 0 # Read-only access to /var/log/containers
 
 daemonset:
   # Annotations to apply to the daemonset
@@ -75,13 +84,7 @@ daemonset:
   #  - name: filebeat-certificates
   #    secretName: filebeat-certificates
   #    path: /usr/share/filebeat/certs
-  # Various pod security context settings. Bear in mind that many of these have an impact on Filebeat functioning properly.
-  #
-  # - User that the container will execute as. Typically necessary to run as root (0) in order to properly collect host container logs.
-  # - Whether to execute the Filebeat containers as privileged containers. Typically not necessarily unless running within environments such as OpenShift.
-  securityContext:
-    runAsUser: 0
-    privileged: false
+  podSecurityContext: null
   resources:
     requests:
       cpu: "100m"
@@ -152,12 +155,7 @@ deployment:
   #    secretName: filebeat-certificates
   #    path: /usr/share/filebeat/certs
   #
-  # - User that the container will execute as.
-  # Not necessary to run as root (0) as the Filebeat Deployment use cases do not need access to Kubernetes Node internals
-  # - Typically not necessarily unless running within environments such as OpenShift.
-  securityContext:
-    runAsUser: 0
-    privileged: false
+  podSecurityContext: null
   resources:
     requests:
       cpu: "100m"
