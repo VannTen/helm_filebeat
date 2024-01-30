@@ -244,6 +244,7 @@ clusterRoleRules:
 
 podAnnotations: {}
 # iam.amazonaws.com/role: es-cluster
+podLabels: {}
 
 # Custom service account override that the pod will use
 serviceAccount: ""
