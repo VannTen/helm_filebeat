@@ -63,6 +63,8 @@ spec:
           - "-e"
           - "-E"
           - "http.enabled=true"
+          - "-E"
+          - "http.host=$(POD_IP)"
         {{- range .extraArgs }}
           - {{ . | quote }}
         {{- end }}
@@ -78,6 +80,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: POD_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: status.PodIP
 {{- if .extraEnvs }}
 {{ toYaml .extraEnvs | indent 8 }}
 {{- end }}
